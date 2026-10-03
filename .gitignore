@@ -1,0 +1,23 @@
+.env
+.env.*
+!.env.example
+research/
+labels/
+shipments/
+.netparcel/
+local/
+node_modules/
+tmp/
+coverage/
+*.log
+*.tgz
+*.pdf
+*.pem
+*.key
+.DS_Store
+Thumbs.db
+
+# Local investigation utilities are preserved but are not part of the public CLI.
+/scripts/netparcel-rates.mjs
+/scripts/netparcel-soap-*.mjs
+/examples/*-rate.json

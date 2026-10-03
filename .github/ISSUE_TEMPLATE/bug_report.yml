@@ -1,0 +1,25 @@
+name: Bug report
+description: Report a reproducible CLI problem.
+body:
+  - type: markdown
+    attributes:
+      value: 'Remove credentials, addresses, phone numbers, tracking numbers, order IDs, and PDF/Base64 label data before posting. Report security issues through private vulnerability reporting.'
+  - type: input
+    id: versions
+    attributes:
+      label: CLI version, Node version, and operating system
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Use placeholders or synthetic shipment details.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true

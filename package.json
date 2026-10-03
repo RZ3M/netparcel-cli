@@ -1,0 +1,46 @@
+{
+  "name": "@rz3m/netparcel-cli",
+  "version": "0.1.0",
+  "description": "Unofficial dependency-free NetParcel CLI for quotes, shipment purchases, and PDF label retrieval",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "author": "RZ3M",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "netparcel": "scripts/netparcel.mjs"
+  },
+  "exports": "./lib/netparcel.mjs",
+  "files": [
+    "lib/cli.mjs",
+    "lib/netparcel.mjs",
+    "scripts/netparcel.mjs",
+    "examples/shipment.template.json",
+    "docs/",
+    ".env.example",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "check": "node scripts/check-source.mjs && node scripts/check-public.mjs",
+    "check:public": "node scripts/check-public.mjs",
+    "check:package": "node scripts/check-package.mjs",
+    "hooks": "git config core.hooksPath .githooks"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RZ3M/netparcel-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RZ3M/netparcel-cli/issues"
+  },
+  "homepage": "https://github.com/RZ3M/netparcel-cli#readme",
+  "keywords": [
+    "netparcel",
+    "shipping",
+    "labels",
+    "cli"
+  ]
+}
