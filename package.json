@@ -1,6 +1,6 @@
 {
   "name": "@rz3m/netparcel-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Unofficial dependency-free NetParcel CLI for quotes, shipment purchases, and PDF label retrieval",
   "private": true,
   "type": "module",
@@ -20,7 +20,10 @@
     "examples/shipment.template.json",
     "docs/",
     ".env.example",
-    "SECURITY.md"
+    "SECURITY.md",
+    "scripts/crop-label.py",
+    "requirements-pdf.txt",
+    "examples/international-shipment.template.json"
   ],
   "scripts": {
     "test": "node --test",

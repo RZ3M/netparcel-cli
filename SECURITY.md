@@ -2,7 +2,7 @@
 
 ## Supported version
 
-Security fixes are provided for the latest commit on `main`. This is an early-stage, unofficial client; a new paid shipment has not yet been verified end to end against the production API.
+Security fixes are provided for the latest commit on `main`. This is an early-stage, unofficial client. A Canada Post Tracked Packet – USA purchase has been verified against the production API; other carrier-specific behavior may differ.
 
 ## Report a vulnerability
 
@@ -17,5 +17,6 @@ Use [GitHub private vulnerability reporting](https://github.com/RZ3M/netparcel-c
 - Git hooks are opt-in for contributors. CI runs the public-file and package audits without production API credentials.
 - The client redacts configured API credentials in output, refuses redirects, and never automatically retries a purchase. Responses and labels still contain customer data.
 - New files use owner-only POSIX permissions where supported. Windows access is governed by the directory's ACLs.
+- Cropped print copies contain the same customer information as the original label. Keep them private alongside the original documents and any personal automation profiles.
 
 If a purchase times out, inspect the provider's shipment history before taking another purchase action. Reusing the same local key is blocked, but the provider does not document server-side idempotency.

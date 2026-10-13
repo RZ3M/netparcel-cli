@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { createClient, buyLabel, saveDocuments } from '../lib/netparcel.mjs';
+import { createClient, buyLabel, saveDocuments, quoteRequest } from '../lib/netparcel.mjs';
 
 fs.mkdirSync('tmp/tests', { recursive: true });
 const root = fs.mkdtempSync(path.resolve('tmp/tests/run-'));
@@ -93,6 +93,74 @@ test('missing shipment fields prevent all network activity', async () => {
   const opts = options({ request: () => assert.fail('Network must not run') }, 'missing');
   opts.ship.destination.address1 = 'REPLACE';
   await assert.rejects(buyLabel(opts), /destination.address1/);
+});
+
+function internationalOptions(client, key) {
+  const result = options(client, key);
+  result.ship.destination = {
+    ...result.ship.destination,
+    country: 'US',
+    province: 'WA',
+    city: 'Seattle',
+    postal_code: '98101',
+  };
+  result.ship.customs_invoice = {
+    reason_for_export: 'Sale',
+    bill_to: 'Shipper',
+    invoice_currency: 'CAD',
+    items: [
+      {
+        description: 'Synthetic plastic item',
+        harmonized_code: '3926.90',
+        origin_country_code: 'CA',
+        quantity: 1,
+        unit_price: 10,
+        weight: 1,
+        weightUnit: 'lbs',
+      },
+    ],
+  };
+  return result;
+}
+
+test('customs validation prevents invalid HS codes and missing item weights before any request or purchase record', async () => {
+  for (const [name, modify, expected] of [
+    ['undotted-hs', (item) => (item.harmonized_code = '392690'), /harmonized_code/],
+    ['missing-weight', (item) => delete item.weight, /\.weight/],
+    ['missing-weight-unit', (item) => delete item.weightUnit, /weightUnit/],
+    ['missing-origin', (item) => (item.origin_country_code = ''), /origin_country_code/],
+    ['missing-value', (item) => (item.unit_price = 0), /unit_price/],
+  ]) {
+    const opts = internationalOptions({ request: () => assert.fail('Network must not run') }, name);
+    modify(opts.ship.customs_invoice.items[0]);
+    assert.throws(() => quoteRequest(opts.ship), expected);
+    await assert.rejects(buyLabel(opts), expected);
+    assert.equal(fs.existsSync(path.join(root, name, 'purchase-attempt.json')), false);
+  }
+});
+
+test('valid dotted HS formats and shipper billing survive a cross-border purchase unchanged', async () => {
+  for (const [index, code] of [
+    '3926.90',
+    '3926.90.99',
+    '3926.90.9989',
+    '3926.90.99.89',
+  ].entries()) {
+    let purchases = 0;
+    const client = {
+      request: async (payload) => {
+        if (payload.rate) return { rates: [rate] };
+        purchases++;
+        assert.equal(payload.ship.customs_invoice.bill_to, 'Shipper');
+        assert.equal(payload.ship.customs_invoice.items[0].harmonized_code, code);
+        return { shipment };
+      },
+    };
+    const opts = internationalOptions(client, `valid-customs-${index}`);
+    opts.ship.customs_invoice.items[0].harmonized_code = code;
+    await buyLabel(opts);
+    assert.equal(purchases, 1);
+  }
 });
 
 test('credential redaction preserves original Base64 document bytes', async () => {

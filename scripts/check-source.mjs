@@ -15,7 +15,12 @@ for (const directory of ['lib', 'scripts', 'tests']) {
     checked++;
   }
 }
-for (const file of ['package.json', 'package-lock.json', 'examples/shipment.template.json']) {
+for (const file of [
+  'package.json',
+  'package-lock.json',
+  'examples/shipment.template.json',
+  'examples/international-shipment.template.json',
+]) {
   JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 console.log(`Syntax checked ${checked} JavaScript files and public JSON files.`);

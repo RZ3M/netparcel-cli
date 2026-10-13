@@ -16,6 +16,8 @@ coverage/
 *.key
 .DS_Store
 Thumbs.db
+__pycache__/
+.venv/
 
 # Local investigation utilities are preserved but are not part of the public CLI.
 /scripts/netparcel-rates.mjs
