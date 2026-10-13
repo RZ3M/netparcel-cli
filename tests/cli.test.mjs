@@ -33,6 +33,43 @@ test('help and version work without credentials or network access', async () => 
   }
 });
 
+test('crop dispatches the local PDF helper without credentials or network access', async () => {
+  let calls = 0;
+  const { settings, output, error } = options({
+    env: { NETPARCEL_PYTHON: 'configured-python' },
+    execPython: (executable, args) => {
+      calls++;
+      assert.equal(executable, 'configured-python');
+      assert.ok(args[0].endsWith('crop-label.py'));
+      assert.deepEqual(args.slice(1), [
+        path.join(root, 'original.pdf'),
+        path.join(root, 'print.pdf'),
+        '--page',
+        '2',
+      ]);
+      return JSON.stringify({ output: path.join(root, 'print.pdf'), page_inches: [4, 6] });
+    },
+  });
+  assert.equal(
+    await runCli(['crop', 'original.pdf', '--out', 'print.pdf', '--page', '2'], settings),
+    0,
+  );
+  assert.equal(calls, 1);
+  assert.deepEqual(JSON.parse(output[0]).page_inches, [4, 6]);
+  assert.equal(error.length, 0);
+});
+
+test('crop rejects invalid output paths and page numbers before invoking Python', async () => {
+  const { settings } = options({ execPython: () => assert.fail('Python must not run') });
+  for (const args of [
+    ['crop', 'original.pdf', '--out', 'original.pdf'],
+    ['crop', 'original.pdf', '--out', 'print.json'],
+    ['crop', 'original.pdf', '--out', 'print.pdf', '--page', '0'],
+    ['crop', 'original.pdf', '--out', 'print.pdf', '--unknown', 'value'],
+  ])
+    assert.equal(await runCli(args, settings), 1);
+});
+
 test('global-install usage does not read credentials from the source checkout', async () => {
   const { settings, error } = options();
   assert.equal(await runCli(['order', '123'], settings), 1);

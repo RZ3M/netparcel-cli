@@ -1,0 +1,3 @@
+# Optional local PDF conversion. The Node.js shipping commands need no packages.
+pdfplumber==0.11.9
+pypdf==6.10.0

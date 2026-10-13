@@ -1,0 +1,60 @@
+{
+  "ship": {
+    "origin": {
+      "country": "CA",
+      "postal_code": "REPLACE",
+      "province": "ON",
+      "city": "REPLACE",
+      "name": "REPLACE",
+      "address1": "REPLACE",
+      "address2": "",
+      "phone": "REPLACE",
+      "address_type": "business",
+      "company_name": "REPLACE"
+    },
+    "destination": {
+      "country": "US",
+      "postal_code": "REPLACE",
+      "province": "REPLACE",
+      "city": "REPLACE",
+      "name": "REPLACE",
+      "address1": "REPLACE",
+      "address2": "",
+      "phone": "REPLACE",
+      "address_type": "residential",
+      "company_name": "REPLACE",
+      "send_email_confirmation": false
+    },
+    "ship_date": "REPLACE-YYYY-MM-DD",
+    "packaging_information": {
+      "packaging_type": "My Packaging",
+      "packages": [
+        {
+          "length": 0,
+          "width": 0,
+          "height": 0,
+          "weight": 0,
+          "weightUnit": "lbs",
+          "insurance_amount": 0,
+          "description": "REPLACE"
+        }
+      ]
+    },
+    "customs_invoice": {
+      "reason_for_export": "REPLACE",
+      "bill_to": "Shipper",
+      "invoice_currency": "CAD",
+      "items": [
+        {
+          "description": "REPLACE",
+          "harmonized_code": "REPLACE",
+          "origin_country_code": "REPLACE",
+          "quantity": 0,
+          "unit_price": 0,
+          "weight": 0,
+          "weightUnit": "lbs"
+        }
+      ]
+    }
+  }
+}

@@ -27,7 +27,10 @@ const allowed = new Set([
   'lib/cli.mjs',
   'lib/netparcel.mjs',
   'scripts/netparcel.mjs',
+  'scripts/crop-label.py',
+  'requirements-pdf.txt',
   'examples/shipment.template.json',
+  'examples/international-shipment.template.json',
 ]);
 for (const file of packed.files) {
   if (!allowed.has(file.path) && !file.path.startsWith('docs/'))
@@ -40,6 +43,9 @@ for (const file of [
   'scripts/netparcel.mjs',
   'lib/cli.mjs',
   'lib/netparcel.mjs',
+  'scripts/crop-label.py',
+  'requirements-pdf.txt',
+  'examples/international-shipment.template.json',
   'README.md',
   'LICENSE',
 ]) {
